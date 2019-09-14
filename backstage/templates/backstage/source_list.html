@@ -1,0 +1,295 @@
+{% extends "backstage/base.html" %}
+{% load staticfiles %}
+{% block title %}搜索结果{% endblock %}
+{% block ext_header %}
+<link rel="stylesheet" href="{% static 'backstage/dist/excel-bootstrap-table-filter-style.css' %}" />
+<link href="{% static 'backstage/raty/jquery.raty.min.css' %}" rel="stylesheet">
+
+<style>
+.form-group{
+	padding: 5px 10px !important;
+}
+.form-group h4{
+	display: inline;
+	font-size:18px;
+	font-weight:700;
+	line-height: 20px !important;
+	margin-bottom: 5px !important;
+}
+.form-group p{
+	font-size:14px;
+}
+.form-group a{
+	text-decoration: none !important;
+	color: #575962;
+}
+.form-group h4 a{
+	color: #06c;
+}
+.form-group .form-control-static{
+	color: #6c757d!important;
+}
+.raty{
+	display: inline-block;
+  float: right;
+}
+.title-group{
+	display: inline-block;
+    width: 100%;
+}
+.card{
+	margin-bottom:15px;
+}
+.card:hover{
+	box-shadow:0px 0px 0px 1px rgba(69, 65, 78, 0.08);
+}
+.card .card-body{
+	padding: 10px 15px 5px 15px!important;
+}
+.abstract {
+	margin-bottom: 0px !important;
+}
+.page-group{
+	text-align: center;
+}
+.pagination{
+    display: inline-flex;
+}
+.page-item{
+	margin: 0 5px !important;
+}
+.form-inline button{
+	margin-right:5px;
+}
+.btn i{
+	margin-right:0.8em;
+}
+.btn-xm {
+	background-color:#f1f1f1;
+	border-color:#f1f1f1;
+	
+}
+.btn-xm:hover{
+	background-color:#D5D5D5;
+	border-color:#D5D5D5;
+}
+.modal-header{
+	display: block;
+}
+</style>
+
+{% endblock %}
+{% block content %}
+
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid">
+			<h4 class="page-title" style="font-weight: 400">搜索结果</h4>
+			<div class="row">
+				<div class="col-md-12">
+					{% for item in uni_list %}
+					<div class="card">
+						<div class="card-body">
+							<div class="form-group title-group">
+								<h4><a href="{% url 'detail' %}?id={{ item.id }}" class="xm-title">
+									{% if item.ltype == 2 %}
+										<font color="#575962">【图书】</font>
+									{% elif item.ltype == 4 %}
+										<font color="#575962">【专利】</font>
+									{% endif %}
+
+									{{ item.title }}
+								</a></h4>
+								
+								{% if False %}
+									<div id="raty-level" class="raty" data-score="2" data-path="{% static 'backstage/raty' %}">
+									</div>
+								{% endif %}
+							</div>
+							
+							<div class="form-group">
+								<p class="form-control-static abstract">
+								{% if item.language == 0 %}
+									{{ item.abstract | truncatechars_html:70 }}
+								{% else %}
+									{{ item.abstract | truncatechars_html:150 }}
+								{% endif %}
+								</p>
+							</div>
+							<div class="form-group form-inline">
+								<p style="margin-bottom: .1rem;">
+									{% if item.authors %}
+									<a href="#" class="json-authors">{{ item.authors }}</a>
+									<a>&nbsp;-&nbsp;</a>
+									{% endif %}
+
+									{% if item.publish %}
+									<a href="#">{{ item.publish }}</a>
+									<a>&nbsp;-&nbsp;</a>
+									{% endif %}
+
+									{% if item.cited %}
+									<a href="#">被引量：{{ item.cited }}</a>
+									<a>&nbsp;-&nbsp;</a>
+									{% endif %}
+
+									{% if item.sore_year %}
+									<a href="#">发表年度：{{ item.sore_year }}</a>
+									{% endif %}
+								</p>
+							</div>
+							<div class="form-group form-inline">
+								<p>
+									{% comment %} <button class="btn btn-secondary btn-xs" ><i class="la la-book"></i>阅读</button> {% endcomment %}
+									<button class="btn btn-secondary btn-xs fav-btn" data-paperid="{{ item.id }}"><i class="la la-star-o"></i>收藏</button>
+									<button class="btn btn-xm btn-xs" data-toggle="modal" data-target="#myModal" data-cited="{{ item.sc_quote }}"><i class="la la-quote-left"></i>引用</button>
+									<button class="btn btn-xm btn-xs sh-b" data-clipboard-text="{{ item.source_url }}"><i class="la la-share"></i>分享</button>
+								</p>
+							</div>					
+						</div>
+					</div>
+					{% endfor %}
+					
+					{% if page_range %}
+					<div class="page-group">
+						<ul class="pagination pg-primary">
+							{% if uni_list.has_previous %}
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Previous">
+									<span aria-hidden="true">«</span>
+									<span class="sr-only">Previous</span>
+								</a>
+							</li>
+							{% endif %}
+							{% for p in page_range %}
+                {% ifequal p number %}
+
+										<li class="page-item active"><a class="page-link" href="{% url 'source_list' %}?page={{p}}">{{ p }}</a></li>
+                {% else %}
+										<li class="page-item"><a class="page-link" href="{% url 'source_list' %}?page={{p}}">{{ p }}</a></li>
+                {% endifequal %}
+            	{% endfor %}
+							{% comment %} <li class="page-item active"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li> {% endcomment %}
+							{% if uni_list.has_next %}
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Next">
+									<span aria-hidden="true">»</span>
+									<span class="sr-only">Next</span>
+								</a>
+							</li>
+							{% endif %}
+						</ul>
+					</div>
+					{% endif %}
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+					<div class="modal-content">
+							<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h6 class="modal-title" id="audit_modalLabel">引用</h6>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label>GB</label>
+									<input type="text" class="form-control" id="modal_GB" placeholder="">
+								</div>
+								<div class="form-group">
+									<label>MLA</label>
+									<input type="text" class="form-control" id="modal_MLA" placeholder="">
+								</div>
+								<div class="form-group">
+									<label>APA</label>
+									<input type="text" class="form-control" id="modal_APA" placeholder="">
+								</div>
+							</div>
+								
+					</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+	</div>
+
+	{% include "backstage/footer.html" %}
+</div>
+
+{% endblock %}
+{% block ext_footer %}
+
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-authors');
+console.log(authors)
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+<script type="text/javascript">
+//key_words 标红
+key_words = {{ key_words | safe }};
+function red_keywords(s,classname){
+	var reg = new RegExp("(" + s + ")", "g");
+	var abstracts = document.getElementsByClassName(classname);
+	for(var i=0;i<abstracts.length;i++){
+		var n = abstracts[i].innerHTML.search(reg);
+		if( n > 0)
+			abstracts[i].innerHTML = abstracts[i].innerHTML.replace(reg, "<font color=#dc3545>$1</font>");
+    }
+}
+
+for( var i = 0; i <key_words.length; i++){
+  //console.log(key_words[i]);
+	red_keywords(key_words[i],'abstract');
+	red_keywords(key_words[i],'xm-title');
+}
+
+</script>
+
+<script src="{% static 'backstage/raty/jquery.raty.js' %}"></script>
+<script type="text/javascript">
+	//星级标定
+	$('.raty').each(function (i) {
+		$(this).raty({readOnly:true});
+	});
+</script>
+
+<script src="{% static 'backstage/dist/excel-bootstrap-table-filter-bundle.js' %}"></script>
+<script type="text/javascript">
+	$(function () {
+		$('#table').excelTableFilter({
+			'captions': {
+				a_to_z: '升序排列',
+				z_to_a: '降序排列',
+				search: '搜索',
+				select_all: '全部选择'
+			}
+		});
+	});
+</script>
+
+<script>
+{% if status == '1' %}
+my_notify('check-circle','删除成功','success');
+{% elif status == '0' %}
+my_notify('times-circle','操作失败','danger');
+{% elif status == '-1' %}
+my_notify('times-circle','异常操作','warning');
+{% elif status == '-2' %}
+my_notify('times-circle','权限不足','warning');
+{% elif status == '2' %}
+my_notify('check-circle','操作成功','success');
+{% elif status == '3' %}
+my_notify('check-circle','审核成功','success');
+{% endif %}
+</script>
+{% endblock %}

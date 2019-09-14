@@ -1,0 +1,79 @@
+﻿{% extends "mainapp/base.html" %}
+{% load staticfiles %}
+{% block title %}首页{% endblock %}
+{% block content %}
+<div class="header-banner">
+
+</div>
+
+<div class="take-our-service">
+    <div class="container">
+        <div class="row">
+            <div class="title-section">
+                <h2>鸣 谢</h2>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="single-service">
+                    <div class="pull-left icon blue">
+                        <a><img src="{% static 'mainapp/img/百度.png' %}" width="30" style="margin: 15px 0;"></a>
+                    </div>
+                    <div class="media content">
+                        <h3><a href="#">百度AI开放平台</a></h3>
+                        <p>OCR通用文字识别技术</p>
+                        <p>语种识别API</p>
+                        <p>短文本相似度</p>
+                        <p>文章标签技术</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="single-service">
+                    <div class="pull-left icon blue">
+                        <a><img src="{% static 'mainapp/img/腾讯云.png' %}" width="30" style="margin: 15px 0;"></a>
+                    </div>
+                    <div class="media content">
+                        <h3><a href="#">腾讯防水墙</a></h3>
+                        <p>人机识别验证码技术</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="single-service">
+                    <div class="pull-left icon blue">
+                        <a><i class="flaticon-light-bulb"></i></a>
+                    </div>
+                    <div class="media content">
+                        <h3><a href="#">我自己</a></h3>
+                        <p>ha ha ha</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="ready-promote-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <div class="content">
+                    <h3>还没有 X 学术聚合系统 账号？</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="button-area">
+                    <a class="default-button-btn" href="{% url 'signup' %}">立即注册</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "mainapp/footer.html" %}
+
+
+{% endblock %}
+{% block ext_js %}
+{% endblock %}

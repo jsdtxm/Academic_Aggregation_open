@@ -1,0 +1,282 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="renderer" content="webkit">
+	<title>{% block title %}{% endblock %} | X 学术聚合系统</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	
+	<link rel="stylesheet" href="{% static 'backstage/css/bootstrap.min.css' %}">
+
+	<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"> -->
+	<link rel="stylesheet" href="{% static 'backstage/css/ready.css' %}">
+	<link rel="stylesheet" href="{% static 'backstage/css/demo.css' %}">
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	{% block ext_header %}{% endblock %}
+	<style>
+	.user-level{
+		font-size:12px !important;
+		white-space: normal !important;
+	}
+	.logo{
+		font-weight:400;
+		font-size:20px;
+		text-decoration: none !important;
+	}
+	.fixed-footer {
+		position: fixed;
+		bottom: 0;
+		width:100%;
+	}
+	#raty-level img{
+		width:18px;
+	}
+	.display-none{
+		display:none;
+	}
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="main-header">
+			<div class="logo-header">
+				<a href="{% url 'index' %}" class="logo">
+					X 学术聚合系统
+				</a>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse"
+				 aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<button class="topbar-toggler more"><i class="la la-ellipsis-v"></i></button>
+			</div>
+			<nav class="navbar navbar-header navbar-expand-lg">
+				<div class="container-fluid">
+
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item dropdown">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="{% static 'backstage/img/profile3.jpg' %}"
+								 alt="user-img" width="36" class="img-circle"><span>{{ user.nickname }}</span></span> </a>
+							<ul class="dropdown-menu dropdown-user">
+								<li>
+									<div class="user-box">
+										<div class="u-img"><img src="{% static 'backstage/img/profile3.jpg' %}" alt="user"></div>
+										<div class="u-text">
+											<h4>{{ user.nickname }}</h4>
+											
+											<p class="text-muted">
+											{% if user.department != None %}
+											{{ user.department.name }}
+											{% else %}
+											{{ user.get_status_display }}
+											{% endif %}
+											</p><a href="{% url 'profile' %}" class="btn btn-rounded btn-danger btn-sm">个人中心</a>
+										</div>
+									</div>
+								</li>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'changepwd' %}"><i class="ti-settings"></i> 修改密码</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> 注销</a>
+							</ul>
+							<!-- /.dropdown-user -->
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="sidebar">
+			<div class="scrollbar-inner sidebar-wrapper">
+				<div class="user">
+					<div class="photo">
+						<img src="{% static 'backstage/img/profile3.jpg' %}">
+					</div>
+					<div class="info">
+						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+							<span>
+								{{ user.nickname }}
+								<span class="user-level">{% if user.department != None %}
+											{{ user.department.name }}
+											{% else %}
+											{{ user.get_status_display }}
+											{% endif %}</span>
+								<span class="caret"></span>
+							</span>
+						</a>
+						<div class="clearfix"></div>
+
+						<div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+							<ul class="nav">
+								<li>
+									<a href="{% url 'profile' %}">
+										<span class="link-collapse">个人中心</span>
+									</a>
+								</li>
+								<li>
+									<a href="{% url 'changepwd' %}">
+										<span class="link-collapse">修改密码</span>
+									</a>
+								</li>
+								<li>
+									<a href="{% url 'logout' %}">
+										<span class="link-collapse">注销</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<ul class="nav">
+					<li id="index" class="nav-item">
+						<a href="/backstage">
+							<i class="la la-search"></i>
+							<p>聚合搜索</p>
+							<!-- <span class="badge badge-count">5</span> -->
+						</a>
+					</li>
+					
+					<li id="favourite_list" class="nav-item">
+						<a href="{% url 'favourite_list' %}">
+							<i class="la la-star-o"></i>
+							<p>我的收藏</p>
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a href="{% url 'logout' %}">
+							<i class="la la-power-off"></i>
+							<p>注销</p>
+							<!-- <span class="badge badge-count">5</span> -->
+						</a>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+        {% block content %}{% endblock %}
+	</div>
+
+	<div id="fakeLoader" class="fakeLoader display-none"></div>
+</body>
+<script src="{% static 'backstage/js/core/jquery.3.2.1.min.js' %}"></script>
+<script src="{% static 'backstage/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
+<script src="{% static 'backstage/js/core/popper.min.js' %}"></script>
+<script src="{% static 'backstage/js/core/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'backstage/js/plugin/chartist/chartist.min.js' %}"></script>
+<script src="{% static 'backstage/js/plugin/chartist/plugin/chartist-plugin-tooltip.min.js' %}"></script>
+
+<script src="{% static 'backstage/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+<script src="{% static 'backstage/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' %}"></script>
+<script src="{% static 'backstage/js/plugin/jquery-mapael/jquery.mapael.min.js' %}"></script>
+<script src="{% static 'backstage/js/plugin/jquery-mapael/maps/world_countries.min.js' %}"></script>
+<script src="{% static 'backstage/js/plugin/chart-circle/circles.min.js' %}"></script>
+<script src="{% static 'backstage/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+
+<script src="{% static 'backstage/js/ready.min.js' %}"></script>
+<script src="{% static 'backstage/js/demo.js' %}"></script>
+
+<script type="text/javascript">
+	function my_notify(icon,message,type){
+		$.notify({
+			icon: 'la la-'+icon,
+			title: '通知',
+			message: message,
+		},{
+			type: type,
+			placement: {
+				from: "top",
+				align: "right"
+			},
+			time: 1000,
+		});
+	}
+</script>
+
+<script>
+$('#myModal').on('show.bs.modal', function (event) {
+      var btnThis = $(event.relatedTarget); //触发事件的按钮
+      var modal = $(this);  //当前模态框
+      var cited = btnThis.data('cited');   //解析出data-id的内容
+      modal.find('#modal_GB').val(cited['sc_GBT7714']);
+			modal.find('#modal_GB').attr('placeholder',cited['sc_GBT7714']);
+			modal.find('#modal_MLA').val(cited['sc_MLA']);
+			modal.find('#modal_MLA').attr('placeholder',cited['sc_MLA']);
+			modal.find('#modal_APA').val(cited['sc_APA']);
+			modal.find('#modal_APA').attr('placeholder',cited['sc_APA']);
+});
+</script>
+
+<script>
+$(".fav-btn").each(function(){
+	$(this).click(function(){
+		htmlobj = $.ajax({url:("/backstage/favourite_paper/?id="+$(this).data("paperid")),async:false});
+		console.log(htmlobj.responseJSON["status"]);
+		if(htmlobj.responseJSON["status"] == "success")
+			my_notify('check-circle','收藏成功','success');
+		else if (htmlobj.responseJSON["status"] == "exist")
+			my_notify('check-circle','已经收藏过了','warning');
+		else
+			my_notify('check-circle','收藏失败','danger');
+ })
+});
+$(".del-btn").each(function(){
+	$(this).click(function(){
+		var flag = confirm("确定要删除吗？");
+		if(flag){
+			htmlobj = $.ajax({url:("/backstage/favourite_del/?id="+$(this).data("paperid")),async:false});
+			console.log(htmlobj.responseJSON["status"]);
+			if(htmlobj.responseJSON["status"] == "success")
+				my_notify('check-circle','删除成功','success');
+			else if (htmlobj.responseJSON["status"] == "not_exist")
+				my_notify('check-circle','找不到对应关系','warning');
+			else
+				my_notify('check-circle','删除失败','danger');
+			window.location.reload();
+		}else{
+		}
+	})
+});
+</script>
+
+<script src="{% static 'backstage/js/clipboard.min.js' %}"></script>
+<script>
+share_btn =	document.getElementsByClassName("sh-b")
+    var clipboard = new ClipboardJS(share_btn);
+    clipboard.on('success',
+    function(e) {
+			my_notify('check-circle','分享成功，链接已保存到剪切板','success');
+    });
+    clipboard.on('error',
+    function(e) {
+			my_notify('check-circle','分享失败','danger');
+        {% comment %} console.log(e); {% endcomment %}
+    });
+
+</script>
+
+<script type="text/javascript">
+	$('#{{ active_menu }}').addClass("active");
+	$(function(){
+		function footerPosition(){
+			$("#footer").removeClass("fixed-footer");
+			var contentHeight = document.body.scrollHeight,//网页正文全文高度
+				winHeight = window.innerHeight;//可视窗口高度，不包括浏览器顶部工具栏
+			if(!(contentHeight > winHeight)){
+				//当网页正文高度小于可视窗口高度时，为footer添加类fixed-bottom
+				$("#footer").addClass("fixed-footer");
+			} else {
+				$("#footer").removeClass("fixed-footer");
+			}
+		}
+		footerPosition();
+		$(window).resize(footerPosition);
+	});
+</script>
+
+{% block ext_footer %}{% endblock %}
+
+</html>

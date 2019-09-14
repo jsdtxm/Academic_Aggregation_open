@@ -1,0 +1,153 @@
+{% extends "backstage/base.html" %}
+{% load staticfiles %}
+{% block title %}阅读文献{% endblock %}
+
+{% block ext_header %}
+
+<style>
+.modal-header{
+	display: block;
+}
+.form-group{
+	padding: 10px 10px;
+}
+.form-group label{
+	font-weight: 600;
+}
+.form-group h4{
+	margin-bottom: 10px;
+}
+.form-group a{
+	text-decoration: none !important;
+}
+.form-group .form-control-static{
+	padding: 0 1em;
+}
+.content{
+	padding: 0px !important;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="main-panel">
+	<div class="content">
+			{% if literature.upfile %}
+			<embed src="/upfiles/{{ literature.upfile }}" width="100%" height="800px" />
+			{% endif %}
+	</div>
+	{% include "backstage/footer.html" %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h6 class="modal-title" id="audit_modalLabel">引用</h6>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>GB</label>
+								<input type="text" class="form-control" id="modal_GB" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>MLA</label>
+								<input type="text" class="form-control" id="modal_MLA" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>APA</label>
+								<input type="text" class="form-control" id="modal_APA" placeholder="">
+							</div>
+						</div>
+							
+				</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="form3" role="form" action="" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h6 class="modal-title" id="audit_modalLabel">文件上传</h6>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="username">PDF文件</label>
+						<input type="file" class="form-control" name="pdf" required>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" id="modal_cancel" data-dismiss="modal" value="关闭" />
+					<input type="submit" class="btn btn-primary" id="modal_submit" value="提交" />
+				</div>
+			</form>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+{% endblock %}
+
+{% block ext_footer %}
+
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-authors');
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-ins');
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-kw');
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+
+<script src="{% static 'backstage/raty/jquery.raty.js' %}"></script>
+<script>
+$('#raty-level').raty();
+
+{% if status == '1' %}
+my_notify('check-circle','删除成功','success');
+{% elif status == '0' %}
+my_notify('times-circle','删除失败','danger');
+{% elif status == '-1' %}
+my_notify('times-circle','异常操作','warning');
+{% elif status == '-2' %}
+my_notify('times-circle','权限不足','warning');
+{% elif status == '2' %}
+my_notify('check-circle','修改成功','success');
+{% elif status == '3' %}
+my_notify('check-circle','审核成功','success');
+{% endif %}
+</script>
+
+{% endblock %}

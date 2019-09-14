@@ -1,0 +1,139 @@
+{% extends "mainapp/base.html" %}
+{% load staticfiles %}
+{% block title %}登录{% endblock %}
+{% block content %}
+<style>
+.form-group {
+    margin-bottom: 1.5em !important;
+}
+.button-group{
+    margin-top: 1.5em !important;
+}
+.button-group p{
+    margin-top: 0.5em !important;
+}
+.button-group a:link{
+    color:#000;
+}
+.button-group a:visited {
+    color:#000;
+}
+.with-errors{
+    text-align: center;
+    font-size: 20px;
+    color: #fb3838;
+}
+</style>
+<!-- Header banner Start Here -->
+<div class="header-banner">
+
+</div>
+<!-- Header banner End Here -->
+<!-- Contact page Start Here -->
+<div class="contact-page-area padding-bottom">
+
+    <div class="container">
+        <div class="row">
+            <!-- Main body Start Here -->
+            <div class="body-content">
+                <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12 col-md-offset-3 col-sm-offset-2">
+                    <form action="" method="post" class="contact-form" id="login_form" role="form">
+                     {% csrf_token %}
+                        <fieldset>
+                            <!-- Form Name -->
+                            <legend class="text-center">立即登录</legend>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- Text input-->
+                                    {% if state %}
+                                    <div class="form-group">
+                                        <div class="help-block with-errors">Message : {{ state }}</div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        <input id="form-name" name="username" placeholder="账号..." class="form-control" type="text" data-error="请输入用户名" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-12">
+                                    <!-- Text input-->
+                                    <div class="form-group">
+                                        <input id="form-subject" name="password" placeholder="密码..." class="form-control" type="password" data-error="请输入密码" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <!-- Button -->
+                                    <div class="form-group button-group">
+                                        <button type="submit" id="submit_button" class="btn-send submit-botton" style="width:100%;">
+                                            登录
+                                        </button>
+                                        <p class="text-right"><a href="{% url 'root' %}">忘记密码</a></p>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="form_ticket" name="ticket" />
+                                <input type="hidden" id="form_randstr" name="randstr" />
+                            </div>
+                            <div class='form-response'></div>
+                        </fieldset>
+                    </form>
+                </div>
+
+            </div>
+            <!-- Main body End Here -->
+        </div>
+    </div>
+</div>
+<!-- Contact page End Here -->
+<!-- Ready to promote Start Here -->
+<div class="ready-promote-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <div class="content">
+                    <h3>还没有 X 学术聚合系统 账号？</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="button-area">
+                    <a class="default-button-btn" href="{% url 'signup' %}">立即注册</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ready to promote End Here -->
+
+<!-- Copyright section Start Here -->
+{% include "mainapp/footer.html" %}
+<!-- Copyright section End Here -->
+
+{% endblock %}
+{% block ext_js %}
+<script>
+//腾讯防水墙验证
+const captcha = new TencentCaptcha('2094639739', function(res) {
+    if(res.ret === 0){
+        document.getElementById("form_ticket").value = res['ticket'];
+        document.getElementById("form_randstr").value = res['randstr'];
+        login_form.submit();
+    }
+});
+</script>
+<script>
+//表单提交阻断
+document.getElementById('login_form').onsubmit = function(e) {
+    captcha.show();
+    return false;
+}
+</script>
+<script>
+//回车键监听
+$("input[name=password]").keypress(function(e) {
+    var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+    if (eCode == 13)
+        document.getElementById('submit_button').click();
+})
+</script>
+{% endblock %}

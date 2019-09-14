@@ -1,0 +1,123 @@
+{% extends "backstage/base.html" %}
+{% load staticfiles %}
+{% block title %}首页{% endblock %}
+
+{% block ext_header %}
+<link rel="stylesheet" href="{% static 'backstage/css/jquery.richUI.min.css' %}" />
+<link rel="stylesheet" href="{% static 'backstage/css/fakeLoader.css' %}">
+<style>
+	.checkout .card-category{
+		font-size: 16px !important;
+	}
+	.search-input-area{
+		display: flex;
+	}
+	.search-input-area input{
+		margin: 0 0.2rem;
+	}
+	.search-text{
+		margin-bottom: 45px;
+	}
+	.check-out-area{
+		padding: 15% 0;
+		background: url({% static 'mainapp/img/check_bg.png' %}) 10% center no-repeat;
+	}
+	.search-select-area{
+		display: block;
+	}
+	.richcheckbox{
+		font-size:14px !important;
+		line-height: 35px !important;
+		padding: 0 1em;
+		height:35px;
+		margin-bottom: 4px !important;
+		background-color: #fff;
+	}
+	.search-btn{
+		padding: 0 2em;
+	}
+	input[type="checkbox"]:disabled{
+		color:#fff;
+	}
+	
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="main-panel">
+
+	<div class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card"  style="min-height:80%">
+						<div class="card-header">
+							<div class="card-title">检索</div>
+						</div>
+						<div class="card-body">							
+							<div class="check-out-area">
+								<div class="col-lg-8 offset-lg-2">
+
+									<form action="" method="post" class="checkout" id="checkoutForm" novalidate="true">
+										 {% csrf_token %}
+										<div class="text-center">
+											<h4 class="search-text">学术聚合检索</h4>
+											<div class="search-select-area">
+												<input name="engines" value="1" type="checkbox" checked="checked" lab="百度学术">
+												<input name="engines" value="2" type="checkbox" lab="必应学术"/>
+												<input name="engines" value="3" type="checkbox" lab="谷歌学术"/>
+												<input name="engines" value="4" type="checkbox" checked="checked" lab="中国知网" />
+												<input name="engines" value="5" type="checkbox" lab="万方数据"/>
+												<input name="engines" value="6" type="checkbox" lab="IEEE Xplore"/>
+											</div>
+											<div class="form-group search-input-area">
+												<input type="text" class="form-control" name="search" id="search_input">
+												<input type="submit" id="search_btn" class="btn btn-primary  search-btn" value="聚合搜索" />
+											</div>
+										</div>
+									</form>
+									
+								</div>
+							</div>							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include "backstage/footer.html" %}
+</div>
+{% endblock %}
+{% block ext_footer %}
+<script type="text/javascript" src="{% static 'backstage/js/jquery.richUI.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'backstage/js/jquery.browser.min.js' %}"></script>
+<script type="text/javascript">
+	$(function() {
+		$("input[name='engines']").richcheckbox();
+	});
+</script>
+<script src="{% static 'backstage/js/fakeLoader.js' %}"></script>
+<script>
+//表单提交阻断
+document.getElementById('checkoutForm').onsubmit = function(e) {
+	$("#fakeLoader").removeClass("display-none");
+	$.fakeLoader({
+		timeToHide:50000,
+		bgColor:"#3394fd",
+	});
+    {% comment %} return false; {% endcomment %}
+}
+</script>
+
+<script>
+{% if status == 'error' %}
+my_notify('times-circle','异常操作','danger');
+{% elif status == 'success' %}
+my_notify('times-circle','操作成功','success');
+{% elif status == 'failure' %}
+my_notify('check-circle','操作失败','warning');
+{% endif %}
+</script>
+{% endblock %}

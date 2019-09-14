@@ -1,0 +1,180 @@
+{% load staticfiles %}
+
+<html class="no-js" lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	    <meta name="renderer" content="webkit">
+        <title>{% block title %}{% endblock %} | X 学术聚合系统</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'mainapp/img/favicon.png' %}">
+
+        <!-- Main Menu CSS -->      
+        <link rel="stylesheet" href="{% static 'mainapp/css/meanmenu.min.css' %}">
+
+        <!-- Normalize CSS --> 
+        <link rel="stylesheet" href="{% static 'mainapp/css/normalize.css' %}">
+
+        <!-- Main CSS -->         
+        <link rel="stylesheet" href="{% static 'mainapp/css/main.css' %}">
+
+        <!-- Bootstrap CSS --> 
+        <link rel="stylesheet" href="{% static 'mainapp/css/bootstrap.min.css' %}">
+
+        <!-- Font-awesome CSS-->
+        <link rel="stylesheet" href="{% static 'mainapp/css/font-awesome.min.css' %}">
+
+        <!-- Animate CSS --> 
+        <link rel="stylesheet" href="{% static 'mainapp/css/animate.min.css' %}">
+
+        <!-- Font-flat CSS-->
+        <link rel="stylesheet" href="{% static 'mainapp/fonts/flaticon.css' %}">
+
+        <!-- Owl Caousel CSS -->
+        <link rel="stylesheet" href="{% static 'mainapp/vendor/OwlCarousel/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'mainapp/vendor/OwlCarousel/owl.theme.default.min.css' %}">
+
+        <!-- nivo slider CSS -->
+        <link rel="stylesheet" href="{% static 'mainapp/vendor/slider/css/nivo-slider.css' %}" type="text/css" />
+        <link rel="stylesheet" href="{% static 'mainapp/vendor/slider/css/preview.css' %}" type="text/css" media="screen" />
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'mainapp/style.css' %}">
+
+
+        <script src="{% static 'mainapp/js/vendor/modernizr-2.8.3.min.js' %}"></script>
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <!-- Add your site or application content here -->
+        <div class="wraper">
+            <header>                
+                <div class="header-one">
+                    <div class="header-top-area" id="sticker">
+                        <div class="container">
+                            <div class="row">                         
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <div class="logo-area">
+                                        <a href="{% url 'root' %}"><img class="img-responsive" src="{% static 'mainapp/img/logo.png' %}" alt="logo"></a>
+                                    </div>
+                                </div>  
+                                <div class="col-lg-7 col-md-7 col-sm-9 col-xs-12">
+                                    <div class="main-menu">
+                                        <nav>
+                                            <ul>
+                                                <li><a href="{% url 'root' %}">主页</a></li>
+                                                <li><a href="{% url 'login' %}">登录</a></li>
+                                                <li><a href="{% url 'signup' %}">注册</a></li>
+                                                <li><a href="{% url 'about' %}">关于</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>   
+                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                    <div class="header-top-right" style="padding: 38px 0;">
+                                        <ul>
+                                            <li>
+                                                <div class="additional-menu-area" id="additional-menu-area">
+                                                    <div id="mySidenav" class="sidenav">
+                                                        <a href="#" class="closebtn">×</a>
+                                                   
+                                                        <ul class="sidenav-nav">
+                                                            <li><a href="{% url 'root' %}">主页</a></li>
+                                                            <li><a href="{% url 'login' %}">登录</a></li>
+                                                            <li><a href="{% url 'signup' %}">注册</a></li>
+                                                            <li><a href="{% url 'about' %}">关于</a></li>
+                                                            
+                                                        </ul>
+                                                    </div>
+                                                    <span class="side-menu-open side-menu-trigger"><i class="fa fa-bars" aria-hidden="true"></i></span>
+                                                </div> 
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> 
+                            </div>                          
+                        </div> 
+                    </div>
+                </div>
+
+                <div class="mobile-menu-area">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mobile-menu">
+                                    <nav id="dropdown">
+                                        <ul>
+                                            <li><a href="{% url 'root' %}">主页</a></li>
+                                            <li><a href="{% url 'login' %}">登录</a></li>
+                                            <li><a href="{% url 'signup' %}">注册</a></li>
+                                            <li><a href="{% url 'about' %}">关于</a></li>                           
+                                        </ul>
+                                    </nav>
+                                </div>                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </header>
+
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Preloader Start Here -->
+        <div id="preloader"></div>
+        <!-- Preloader End Here -->
+
+        <!-- jquery-->  
+        <script src="{% static 'mainapp/js/jquery-2.2.4.min.js' %}" type="text/javascript"></script>
+
+        <!-- Plugins js -->
+        <script src="{% static 'mainapp/js/plugins.js' %}" type="text/javascript"></script>
+        
+        <!-- Bootstrap js -->
+        <script src="{% static 'mainapp/js/bootstrap.min.js' %}" type="text/javascript"></script>
+
+        <!-- Meanmenu Js -->
+        <script src="{% static 'mainapp/js/jquery.meanmenu.min.js' %}" type="text/javascript"></script>
+
+        <!-- Counter Js -->
+        <script src="{% static 'mainapp/js/jquery.counterup.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'mainapp/js/waypoints.min.js' %}" type="text/javascript"></script>
+
+        <!-- WOW JS -->     
+        <script src="{% static 'mainapp/js/wow.min.js' %}"></script>
+
+        <!-- Nivo slider js -->     
+        <script src="{% static 'mainapp/vendor/slider/js/jquery.nivo.slider.js' %}" type="text/javascript"></script>
+        <script src="{% static 'mainapp/vendor/slider/home.js' %}" type="text/javascript"></script>
+
+        <!-- Owl Cauosel JS -->
+        <script src="{% static 'mainapp/vendor/OwlCarousel/owl.carousel.min.js' %}" type="text/javascript"></script>
+
+        <!-- Validator js -->
+        <script src="{% static 'mainapp/js/validator.min.js' %}" type="text/javascript"></script>
+
+        <!-- Srollup js -->
+        <script src="{% static 'mainapp/js/jquery.scrollUp.min.js' %}" type="text/javascript"></script>
+        
+        <!-- Custom Js -->
+        <script src="{% static 'mainapp/js/main.js' %}" type="text/javascript"></script> 
+
+        <script>
+            /* jQuery MeanMenu */
+            $('nav#dropdown').meanmenu({siteLogo: "<a href='index.html'><img class='img-responsive-mobile' src='{% static 'mainapp/img/logo2.png' %}' /></a>"});
+        </script>
+
+        {% block ext_js %}{% endblock %}
+
+    </body>
+</html>
+

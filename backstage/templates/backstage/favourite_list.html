@@ -1,0 +1,211 @@
+{% extends "backstage/base.html" %}
+{% load staticfiles %}
+{% block title %}我的收藏{% endblock %}
+{% block ext_header %}
+<link rel="stylesheet" href="{% static 'backstage/dist/excel-bootstrap-table-filter-style.css' %}" />
+<link href="{% static 'backstage/raty/jquery.raty.min.css' %}" rel="stylesheet">
+<style>
+.btn-sm {
+  font-size: 12px !important;
+  padding: 7px 13px;
+}
+.form-check1{
+	position: initial;
+}
+.modal-header{
+	display: block;
+}
+.dropdown-filter-dropdown{
+	display: inline !important;
+}
+.form-check-sign{
+	padding-left: 1em !important;
+}
+.form-button-action button{
+	padding-left: 8px;
+	padding-right: 8px;
+}
+</style>
+{% endblock %}
+{% block content %}
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card card-tasks">
+						<div class="card-header">
+							<div style="display: flex;width: 100%;">
+								<div class="card-title">列表</div>
+								<button class="btn btn-primary ml-auto" onclick="{window.open('{% if body == 'banner' %}{% url 'banner' %}{% elif body == 'forum' %}{% url 'forum' %}{% endif %}','_self');}">添加</button>
+							</div>
+							
+						</div>
+						<div class="card-body">
+
+							<div class="table-responsive" style="min-height: 300px;">
+								<table id="table" class="table table-bordered">
+									<thead>
+										<tr>
+											<th class="no-all" scope="col">
+												<div class="form-check form-check1" style="padding: 0 !important;">
+													<label class="form-check-label">
+														<input class="form-check-input  select-all-checkbox" type="checkbox" data-select="checkbox" data-target=".task-select1">
+														<span class="form-check-sign"></span>
+													</label>
+												</div>
+											</th>
+											<th class="no-filter no-sort" scope="col" style="width: 60%;min-width: 15em;">题名</th>
+											<th class="no-filter no-sort text-center" scope="col" style="width: 15%;min-width: 120px;">作者</th>
+											<th class="no-sort text-center" scope="col" style="width: 10%;min-width: 120px;">来源</th>
+											<th class="no-filter no-search text-center" scope="col" style="width: 10%;min-width: 80px;">年份</th>
+											<th class="no-filter no-search text-center" scope="col" style="width: 10%;min-width: 80px;">被引</th>
+											<th class="no-all text-center" scope="col" style="width: 10%;min-width: 100px;">星级</th>
+											<th class="no-all text-center" scope="col" style="width: 10%;min-width: 120px;">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for item in uni_list %}
+										<tr>
+											<td >
+												<div class="form-check  form-check1" style="padding: 0 !important;">
+													<label class="form-check-label">
+														<input class="form-check-input task-select1" type="checkbox">
+														<span class="form-check-sign"></span>
+													</label>
+												</div>
+											</td>
+											<td>
+												<a href="{% url 'detail' %}?id={{ item.id }}" id="id_item_{{ item.id }}" target="_self">
+													{% if item.ltype == 2 %}
+														<font color="#575962">【图书】</font>
+													{% elif item.ltype == 4 %}
+														<font color="#575962">【专利】</font>
+													{% endif %}
+													{{ item.title | truncatechars_html:65 }}
+												</a>
+											</td>
+											<td class="text-center json-authors">{{ item.authors }}</td>
+											<td class="text-center">{{ item.publish }}</td>
+											<td class="text-center">{{ item.sore_year }}</td>
+											<td class="text-center">{{ item.cited }}</td>
+
+											<td class="text-center">
+												<div id="raty-level" class="raty" data-score="2" data-path="{% static 'backstage/raty' %}">
+												</div>
+											</td>
+
+											<td class="td-actions text-center">
+
+												<div class="form-button-action">
+													<button type="button" data-toggle="modal" data-target="#myModal" data-cited="{{ item.sc_quote }}" class="btn btn-link btn-simple-primary">
+														<i class="la la-quote-left"></i>
+													</button>
+
+													
+													<button type="button" data-toggle="tooltip" class="btn btn-link btn-simple-danger del-btn" data-paperid="{{ item.id }}">
+														<i class="la la-close"></i>
+													</button>
+											
+												</div>
+											</td>
+										</tr>
+										{% empty %}
+										<tr>
+											<td colspan="5" class="text-center">
+												<h2>暂无</h2>
+											</td>
+
+										</tr>
+										{% endfor %}
+										
+									</tbody>
+									
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h6 class="modal-title" id="audit_modalLabel">引用</h6>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>GB</label>
+								<input type="text" class="form-control" id="modal_GB" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>MLA</label>
+								<input type="text" class="form-control" id="modal_MLA" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>APA</label>
+								<input type="text" class="form-control" id="modal_APA" placeholder="">
+							</div>
+						</div>
+							
+				</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
+
+	{% include "backstage/footer.html" %}
+</div>
+
+{% endblock %}
+{% block ext_footer %}
+<script src="{% static 'backstage/raty/jquery.raty.js' %}"></script>
+<script src="{% static 'backstage/dist/excel-bootstrap-table-filter-bundle.js' %}"></script>
+<script type="text/javascript">
+	$(function () {
+		$('#table').excelTableFilter({
+			'captions': {
+				a_to_z: '升序排列',
+				z_to_a: '降序排列',
+				search: '搜索',
+				select_all: '全部选择'
+			}
+		});
+	});
+</script>
+<script type="text/javascript">
+	//星级标定
+	$('.raty').each(function (i) {
+		$(this).raty();
+	});
+</script>
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-authors');
+console.log(authors)
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+<script>
+{% if status == '1' %}
+my_notify('check-circle','删除成功','success');
+{% elif status == '0' %}
+my_notify('times-circle','操作失败','danger');
+{% elif status == '-1' %}
+my_notify('times-circle','异常操作','warning');
+{% elif status == '-2' %}
+my_notify('times-circle','权限不足','warning');
+{% elif status == '2' %}
+my_notify('check-circle','操作成功','success');
+{% elif status == '3' %}
+my_notify('check-circle','审核成功','success');
+{% endif %}
+</script>
+{% endblock %}

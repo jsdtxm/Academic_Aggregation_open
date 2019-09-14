@@ -1,0 +1,6 @@
+ck*
+*.pyc
+__pycache__
+migrations
+~$*
+upfiles/*

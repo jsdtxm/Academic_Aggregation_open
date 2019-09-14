@@ -1,0 +1,196 @@
+﻿{% extends "mainapp/base.html" %}
+{% load staticfiles %}
+{% block title %}首页{% endblock %}
+{% block content %}
+<style>
+.icon a{
+    padding: 1em 0.7em !important;
+}
+.about-seo-one {
+    position: sticky;
+}
+</style>
+<!-- Slider 1 Area Start Here -->               
+<div class="slider-default slider-overlay">
+    <div class="bend niceties preview-1">
+        <div id="ensign-nivoslider-3" class="slides">   
+            <img src="{% static 'mainapp/img/slider/slide1_1.jpg' %}" alt="slider" title="#slider-direction-1">
+            <img src="{% static 'mainapp/img/slider/slide1_2.jpg' %}" alt="slider" title="#slider-direction-2">
+            <img src="{% static 'mainapp/img/slider/slide1_3.jpg' %}" alt="slider" title="#slider-direction-3">
+        </div>
+        <div id="slider-direction-1" class="t-cn slider-direction">
+            <div class="slider-content s-tb slide-1 container">
+                <div class="title-container s-tb-c">
+                    <h1>一体化解决方案</h1>
+                    <p>全新的云端在线学术资源管理平台，帮助学校、科研机构建立自己的学术资源系统，提供从技术方案、内容管理到大数据支持的学术资源一站式解决方案</p>
+                    <div class="slider-btn-area">
+                        <a href="{% url 'login' %}" class="ghost-btn">立即体验</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="slider-direction-2" class="t-cn slider-direction">
+            <div class="slider-content s-tb slide-2 container">
+                    <div class="title-container s-tb-c">
+                    <h1>多平台聚合检索</h1>
+                    <p>全新的云端在线学术资源管理平台，帮助学校、科研机构建立自己的学术资源系统，提供从技术方案、内容管理到大数据支持的学术资源一站式解决方案</p>
+                    <div class="slider-btn-area">
+                        <a href="{% url 'login' %}" class="ghost-btn">立即体验</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="slider-direction-3" class="t-cn slider-direction">
+            <div class="slider-content s-tb slide-3 container">
+                    <div class="title-container s-tb-c">
+                    <h1>智能数据分析</h1>
+                    <p>全新的云端在线学术资源管理平台，帮助学校、科研机构建立自己的学术资源系统，提供从技术方案、内容管理到大数据支持的学术资源一站式解决方案</p>
+                    <div class="slider-btn-area">
+                        <a href="{% url 'login' %}" class="ghost-btn">立即体验</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+<!-- Slider 1 Area End Here -->
+<!-- Home one service Start Here -->
+<div class="home-one-service padding-top-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="single-service">
+                    <div class="pull-left icon teal">
+                        <a><i class="fa fa-lock"></i></a>
+                    </div>
+                    <div class="media content">
+                        <h3><a href="#">加密存储</a></h3>
+                        <p>SHA256 高强度云端加密存储，保护您的数据资产安全。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="single-service">
+                    <div class="pull-left icon red">
+                        <a><i class="fa fa-cubes"></i></a>
+                    </div>
+                    <div class="media content">
+                        <h3><a href="#">跨平台</a></h3>
+                        <p>先进的响应式布局技术，手机电脑皆可获得一致体验。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="single-service">
+                    <div class="pull-left icon blue">
+                        <a><i class="fa fa-mixcloud"></i></a>
+                    </div>
+                    <div class="media content">
+                        <h3><a href="#">混合云端</a></h3>
+                        <p>融合了私有云的安全特性，公有云的计算资源。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="about-seo-one padding-top-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="content-part">
+                    <h2 style="font-size: 40px;"><span style="font-size: 30px;padding-right:0.5em;">什么是</span> “ X 学术聚合系统 ”</h2>
+                    <p>全新的云端在线学术资源管理平台，帮助学校、科研机构建立自己的学术资源系统，提供从技术方案、内容管理到大数据支持的学术资源一站式解决方案</p>
+                    <a class="ghost-btn" href="#">立即体验</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="image-part">
+                    <img src="{% static 'mainapp/img/what_seo_img.png' %}" alt="what seo">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="our-pricing-table padding-two-top-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="title-section">
+                <h2>多重解决方案</h2>
+                {% comment %} <p>Simply dummy text of the printing and typesetting industry arore</p> {% endcomment %}
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="pricing-table-item pricing-table-one">
+                    <h3>Free</h3>
+                    <h4>免费在线学术平台体验</h4>
+                    <ul>
+                        <li>基本的智能学术聚合平台体验</li>
+                        <li>30 用户数</li>
+                        <li>4 组可选的外部数据库</li>
+                        <li>-</li>
+                        <li>公有云部署</li>
+                    </ul>
+                    <a class="default-button-btn" href="#">立即体验</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="pricing-table-item pricing-table-two">
+                    <h3>Standard</h3>
+                    <h4>定制化学术平台解决方案</h4>
+                    <ul>
+                        <li>标准的智能学术聚合平台体验</li>
+                        <li>3000 用户数</li>
+                        <li>16 组可选的外部数据库</li>
+                        <li>-</li>
+                        <li>可选的混合云部署</li>
+                    </ul>
+                    <a class="default-button-btn" href="#">查看详情</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="pricing-table-item pricing-table-three">
+                    <h3>Unlimited</h3>
+                    <h4>学术资源建设解决方案</h4>
+                    <ul>
+                        <li>完整的智能学术聚合平台体验</li>
+                        <li>30000 用户数</li>
+                        <li>全部可选的外部数据库</li>
+                        <li>-</li>
+                        <li>可选的混合云部署</li>
+                    </ul>
+                    <a class="default-button-btn" href="#">查看详情</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ready-promote-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <div class="content">
+                    <h3 style="font-size:24px;">即刻使用 <span style="font-size:32px;">X 学术聚合系统</span> 享受先进的信息化学术资源管理</h3>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="button-area">
+                    <a class="default-button-btn" href="#">立即体验</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ready to promote End Here -->
+
+<!-- Copyright section Start Here -->
+{% include "mainapp/footer.html" %}
+
+<!-- Copyright section End Here -->
+        
+
+{% endblock %}
+{% block ext_js %}
+{% endblock %}

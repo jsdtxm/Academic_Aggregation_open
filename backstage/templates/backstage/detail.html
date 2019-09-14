@@ -1,0 +1,350 @@
+{% extends "backstage/base.html" %}
+{% load staticfiles %}
+{% block title %}文献{% endblock %}
+
+{% block ext_header %}
+
+<style>
+.input-group-append{
+	margin-right: -1px;
+}
+.datepicker,.datetimepicker{
+	font-size: 14px;
+}
+.modal-header{
+	display: block;
+}
+.card-action{
+	padding: 15px 10px !important;
+	text-align: right;
+}
+.form-group{
+	padding: 10px 10px;
+}
+.form-group label{
+	font-weight: 600;
+}
+.form-group h4{
+	margin-bottom: 10px;
+}
+.form-group a{
+	text-decoration: none !important;
+}
+.form-group .form-control-static{
+	padding: 0 1em;
+}
+.form-inline button{
+	margin-right:5px;
+}
+.btn i{
+	margin-right:0.8em;
+}
+.btn-keyword{
+	margin: 0 1px !important;
+	padding: 2px 6px !important;
+	margin-bottom :8px !important;
+}
+.powered-img{
+	max-width: 100%;
+	width:130px;
+	height: auto;
+	margin: 0 8px;
+	margin-bottom:8px;
+}
+{% comment %} ol {list-style-type:none;}  {% endcomment %}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="main-panel">
+	<div class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="card">
+						<div class="card-body">
+							<div class="form-group">
+								<h4><a href="#">
+									{% if literature.ltype == 2 %}
+										<font color="#575962">【图书】</font>
+									{% elif literature.ltype == 4 %}
+										<font color="#575962">【专利】</font>
+									{% endif %}
+									{{ literature.title }}
+								</a></h4>
+								<p >
+									<div id="raty-level" data-score="2" data-path="{% static 'backstage/raty' %}">
+									</div>
+								</p>
+							</div>
+							<hr/>
+							<div class="form-group form-inline">
+								<p>
+									{% if literature.upfile %}
+									<button onclick="window.open('{% url 'pdf_view' %}?id={{ literature.id }}','_self')" class="btn btn-primary btn-xs"><i class="la la-external-link"></i>阅读</button>
+									{% else %}
+									<button  data-toggle="modal" data-target="#myModal2" class="btn btn-success btn-xs"><i class="la la-cloud-upload"></i>上传文件</button>
+									{% endif %}
+									<button class="btn btn-secondary btn-xs fav-btn" data-paperid="{{ literature.id }}"><i class="la la-star-o"></i>收藏</button>
+									<button class="btn btn-xm btn-xs" data-toggle="modal" data-target="#myModal" data-cited="{{ literature.sc_quote }}"><i class="la la-quote-left"></i>引用</button>
+									<button class="btn btn-xm btn-xs sh-b" data-clipboard-text="{{ literature.source_url }}"><i class="la la-share"></i>分享</button>
+								</p>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label">作者</label>
+								<p class="form-control-static json-authors">{{ literature.authors }}</p>
+							</div>
+							{% if literature.institution %}
+							<div class="form-group">
+								<label class="control-label">机构</label>
+								<p class="form-control-static json-ins">{{ literature.institution }}</p>
+							</div>
+							{% endif %}
+							<div class="form-group">
+								<label class="control-label">摘要</label>
+								<p class="form-control-static">{{ literature.abstract }}</p>
+							</div>
+							{% if keywords %}
+							<div class="form-group">
+								<label class="control-label">关键词</label>
+								<p>
+								{% for item in keywords %}
+								<button class="btn btn-primary btn-sm btn-border btn-keyword">{{ item }}</button>
+								{% comment %} <a class="nav-link active" href="#">{{ item }}</a> {% endcomment %}
+								{% comment %} <p class="form-control-static json-kw">{{ item }}</p> {% endcomment %}
+								{% endfor %}
+								</p>
+							</div>
+							{% endif %}
+
+							{% if ai_keyword %}
+							<div class="form-group">
+								
+								<label class="control-label">AI关键词</label>
+								
+								<label style="margin-left:18px;color:#9a9a9a !important;">  Powered by</label><a href="https://ai.baidu.com/"><img class="powered-img" src="{% static 'backstage/img/bd-logo.png' %}"></img></a>
+								
+								<p>
+								{% for item in ai_keyword%}
+								<button class="btn btn-default btn-sm btn-border btn-keyword">{{ item }}</button>
+								{% comment %} <a class="nav-link active" href="#">{{ item }}</a> {% endcomment %}
+								{% comment %} <p class="form-control-static json-kw">{{ item }}</p> {% endcomment %}
+								{% endfor %}
+								</p>
+							</div>
+							{% endif %}
+							{% if literature.doi %}
+							<div class="form-group">
+								<label class="control-label">DOI</label>
+								<p class="form-control-static">{{ literature.doi }}</p>
+							</div>
+							{% endif %}
+							<div class="form-group">
+								<label class="control-label">被引量</label>
+								<p class="form-control-static">{{ literature.cited }}</p>
+							</div>
+							{% if literature.sore_year %}
+							<div class="form-group">
+								<label class="control-label">发表年度</label>
+								<p class="form-control-static">{{ literature.sore_year }}</p>
+							</div>
+							{% endif %}
+
+						</div>
+
+					</div>
+					{% if uni_list %}
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">参考文献</div>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								<ol>
+								{% for item in uni_list %}
+								<li>
+									<p class="form-control-static">{{ item }}</p>
+								</li>
+								{% endfor %}
+								</ol>
+							</div>
+						</div>
+					</div>	
+					{% endif %}
+				</div>
+				
+				<div class="col-lg-4">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">来源</div>
+						</div>
+
+						<div class="card-body">
+							<div class="form-group text-center">
+								<img src="{% static 'backstage/img/暂无图片.jpg' %}" width=200 style="max-width: 100%;height: auto;"></img>
+								
+							</div>
+							<div class="form-group text-center">
+								<h6>{{ literature.publish }}</h6>
+								<p class="form-control-static">{{ literature.sore_year }}</p>
+							</div>
+								
+						</div>
+					</div>
+					
+					{% if literature.all_version %}
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">全部来源</div>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								{% comment %} <label class="control-label">普通</label> {% endcomment %}
+								{% for k,v in all_version.items %}
+								<a href="{{ v }}" target='_blank' class="btn btn-primary btn-full text-left mt-2 mb-2"><i class="la la-plus"></i>{{ k }}</a>
+								{% endfor %}
+								{% comment %} <a href="#" class="btn btn-primary btn-full text-left mt-2 mb-2"><i class="la la-plus"></i> 万方</a> {% endcomment %}
+							</div>
+						</div>
+					</div>
+					{% endif %}
+
+					{% if literature.savelink %}
+					<div class="card">
+						<div class="card-header">
+							<div class="card-title">CNKI链接</div>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+								{% comment %} <label class="control-label">普通</label> {% endcomment %}
+								{% for k,v in savelink.items %}
+								<a href="{{ v }}" target='_blank' class="btn btn-primary btn-full text-left mt-2 mb-2"><i class="la la-plus"></i>{{ k }}</a>
+								{% endfor %}
+								{% comment %} <a href="#" class="btn btn-primary btn-full text-left mt-2 mb-2"><i class="la la-plus"></i> 万方</a> {% endcomment %}
+							</div>
+						</div>
+
+					</div>
+					{% endif %}
+
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	{% include "backstage/footer.html" %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+				<div class="modal-content">
+						<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h6 class="modal-title" id="audit_modalLabel">引用</h6>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>GB</label>
+								<input type="text" class="form-control" id="modal_GB" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>MLA</label>
+								<input type="text" class="form-control" id="modal_MLA" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>APA</label>
+								<input type="text" class="form-control" id="modal_APA" placeholder="">
+							</div>
+						</div>
+							
+				</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="form3" role="form" action="" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h6 class="modal-title" id="audit_modalLabel">文件上传</h6>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="username">PDF文件</label>
+						<input type="file" class="form-control" name="pdf" required>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" id="modal_cancel" data-dismiss="modal" value="关闭" />
+					<input type="submit" class="btn btn-primary" id="modal_submit" value="提交" />
+				</div>
+			</form>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+{% endblock %}
+
+{% block ext_footer %}
+
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-authors');
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-ins');
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+<script type="text/javascript">
+//json作者转文字
+var authors = document.getElementsByClassName('json-kw');
+for(var i=0;i<authors.length;i++){
+	try{
+		authors[i].innerHTML = JSON.parse(authors[i].innerHTML);
+		authors[i].innerHTML = authors[i].innerHTML.replace(/,/g, '，');
+	}
+	catch(e){}
+}
+</script>
+
+<script src="{% static 'backstage/raty/jquery.raty.js' %}"></script>
+<script>
+$('#raty-level').raty();
+
+{% if status == '1' %}
+my_notify('check-circle','删除成功','success');
+{% elif status == '0' %}
+my_notify('times-circle','删除失败','danger');
+{% elif status == '-1' %}
+my_notify('times-circle','异常操作','warning');
+{% elif status == '-2' %}
+my_notify('times-circle','权限不足','warning');
+{% elif status == '2' %}
+my_notify('check-circle','修改成功','success');
+{% elif status == '3' %}
+my_notify('check-circle','审核成功','success');
+{% endif %}
+</script>
+
+{% endblock %}
