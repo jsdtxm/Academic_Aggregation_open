@@ -8,7 +8,7 @@ from requests_html import HTML, HTMLSession
 from Academic_Aggregation import celery_app as app
 import random
 from django.core.cache import cache
-# from .likelihood import likelihood
+from .likelihood import likelihood
 
 redis_on = True
 
@@ -61,31 +61,7 @@ def find_same(title,abstract):
         if not liter.abstract:
             continue
 
-        # 短文本相似度
-        if True:
-            url = "https://aip.baidubce.com/rpc/2.0/nlp/v2/simnet"
-            session = HTMLSession()
-            
-            if access_token:
-
-                keyword_request = session.post(
-                    url+'?access_token='+access_token,
-                    json={
-                        'text_1': abstract,
-                        'text_2': liter.abstract,
-                    },
-                    headers={'Content-Type': 'application/json','charset':'utf-8'}
-                )
-                keyword_request.encoding = 'gbk'
-                keyword_request_json = keyword_request.json()
-
-                sim = keyword_request_json.get('score')
-                if not sim:
-                    return -1
-        # except Exception as e:
-        #     print(e)
-
-        # sim = likelihood(abstract,liter.abstract)
+        sim = likelihood(abstract,liter.abstract)
         # print(sim)
         if sim > max_sim and sim > 0.8 :
             max_sim = sim
