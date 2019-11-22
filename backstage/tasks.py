@@ -9,9 +9,9 @@ from Academic_Aggregation import celery_app as app
 import random
 from django.core.cache import cache
 from .likelihood import likelihood
+import langid
 
 redis_on = True
-
 
 def bd_access_token():
     
@@ -40,13 +40,10 @@ def bd_access_token():
     # print(access_token)
     return access_token
 
-def is_chinese(uchar):
-    """判断一个unicode是否是汉字"""
-    return uchar >= u'\u4e00' and uchar<=u'\u9fa5'
-
-def is_alphabet(uchar):
-    """判断一个unicode是否是英文字母"""
-    return (uchar >= u'\u0041' and uchar<=u'\u005a') or (uchar >= u'\u0061' and uchar<=u'\u007a')
+def lang_detection(ustr):
+    '语种识别'
+    lineTuple = langid.classify(ustr)
+    return lineTuple[0]
 
 def find_same(title,abstract):
     """判断是否有相同文献"""
@@ -366,7 +363,7 @@ def bd_search_orm(self,keywords,page):
             source_url = item.attrs['mu'].strip()
             
             liter = Literature(
-                language = 0 if is_chinese(abstract[0]) else 1,
+                language = 0 if lang_detection(abstract[:20]) == 'zh' else 1,
                 ltype = ltype,
                 title = title,
                 authors = json.dumps(authors),
@@ -537,7 +534,7 @@ def cnki_search(self,keywords,page):
             cited = sp[2].text.split('（')[-1][:-1]
 
             liter = Literature(
-                language = 0 if is_chinese(abstract[0]) else 1,
+                language = 0 if lang_detection(abstract[:20]) == 'zh' else 1,
                 title = title,
                 publish = publish,
                 sore_year = sore_year if type(sore_year) == type(123) else None,
