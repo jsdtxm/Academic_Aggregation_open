@@ -13,33 +13,6 @@ import langid
 
 redis_on = True
 
-def bd_access_token():
-    
-    cache_access_token = cache.get('access_token')
-    if cache_access_token:
-        # print('已缓存')
-        return cache_access_token
-    
-    access_token_url = 'https://aip.baidubce.com/oauth/2.0/token'
-    session = HTMLSession()
-
-    access_token_request = session.post(
-        access_token_url,
-        data={
-        'grant_type': 'client_credentials',
-        'client_id': '',
-        'client_secret':'',
-        },
-        headers={'Content-Type': 'application/json'}
-    ).json()
-    
-    expires_in = access_token_request.get('expires_in')
-
-    access_token = access_token_request.get('access_token')
-    cache.set('access_token', access_token, expires_in-30)
-    # print(access_token)
-    return access_token
-
 def lang_detection(ustr):
     '语种识别'
     lineTuple = langid.classify(ustr)
@@ -49,8 +22,6 @@ def find_same(title,abstract):
     """判断是否有相同文献"""
     liters = Literature.objects.filter(title=title)
 
-    access_token = bd_access_token()
-    
     max_id = -1
     max_sim = 0
     for liter in liters:
