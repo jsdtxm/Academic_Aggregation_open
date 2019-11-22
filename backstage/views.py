@@ -89,35 +89,35 @@ def detail(request):
         literature.upfile = obj
         literature.save()
     
-    else:
-        if not literature.ai_keyword and literature.title and literature.abstract:
-            try:
-                url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/keyword"
-                session = HTMLSession()
-                access_token = bd_access_token()
+    # else:
+    #     if not literature.ai_keyword and literature.title and literature.abstract:
+    #         try:
+    #             url = "https://aip.baidubce.com/rpc/2.0/nlp/v1/keyword"
+    #             session = HTMLSession()
+    #             access_token = bd_access_token()
 
-                if access_token:
-                    keyword_request = session.post(
-                        url+'?access_token='+access_token,
-                        json={
-                            'title': literature.title[:80],
-                            'content': literature.abstract,
-                        },
-                        headers={'Content-Type': 'application/json','charset':'utf-8'}
-                    )
-                    keyword_request.encoding = 'gbk'
-                    keyword_request_json = keyword_request.json()
+    #             if access_token:
+    #                 keyword_request = session.post(
+    #                     url+'?access_token='+access_token,
+    #                     json={
+    #                         'title': literature.title[:80],
+    #                         'content': literature.abstract,
+    #                     },
+    #                     headers={'Content-Type': 'application/json','charset':'utf-8'}
+    #                 )
+    #                 keyword_request.encoding = 'gbk'
+    #                 keyword_request_json = keyword_request.json()
 
-                    key_items = keyword_request_json.get('items')
-                    if key_items:
-                        ai_kws = []
-                        for ki in key_items:
-                            ai_kws.append(ki['tag'])
-                        # print(ai_kws)
-                        literature.ai_keyword = json.dumps(ai_kws)
-                        literature.save()
-            except Exception as e:
-                print(e)
+    #                 key_items = keyword_request_json.get('items')
+    #                 if key_items:
+    #                     ai_kws = []
+    #                     for ki in key_items:
+    #                         ai_kws.append(ki['tag'])
+    #                     # print(ai_kws)
+    #                     literature.ai_keyword = json.dumps(ai_kws)
+    #                     literature.save()
+    #         except Exception as e:
+    #             print(e)
 
     try:
         uni_list = json.loads(literature.quotes)
