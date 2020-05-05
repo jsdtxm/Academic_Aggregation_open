@@ -1,4 +1,4 @@
-Django==2.1.11
+Django==2.2.10
 django-simple-captcha==0.5.9
 celery==4.2.2
 django-celery-results
